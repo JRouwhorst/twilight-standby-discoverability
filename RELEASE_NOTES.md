@@ -1,5 +1,7 @@
 # Twilight Standby Discoverability v1.1
 
+[![Donate with PayPal](https://img.shields.io/badge/Donate-PayPal-0070BA?style=flat&logo=paypal)](https://www.paypal.com/donate/?hosted_button_id=3989J24TFEK9Y) [![Donate with Revolut](https://img.shields.io/badge/Donate-Revolut-191C1F?style=flat&logo=revolut)](https://revolut.me/j_rouwhorst)
+
 A Magisk module that holds one kernel wakelock to keep the tested Xiaomi TV Box S 3rd Gen reachable during standby over Wi-Fi or USB Ethernet.
 
 - Tested firmware: V816.0.11.0.UZFAABX, Android 14; Magisk 30.7.
