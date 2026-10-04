@@ -1,5 +1,7 @@
 # Twilight Standby Discoverability
 
+[![Donate with PayPal](https://img.shields.io/badge/Donate-PayPal-0070BA?style=flat&logo=paypal)](https://www.paypal.com/donate/?hosted_button_id=3989J24TFEK9Y) [![Donate with Revolut](https://img.shields.io/badge/Donate-Revolut-191C1F?style=flat&logo=revolut)](https://revolut.me/j_rouwhorst)
+
 **[Download the module](https://github.com/JRouwhorst/twilight-standby-discoverability/releases/latest)** · **[Report an issue](https://github.com/JRouwhorst/twilight-standby-discoverability/issues)** · **[♡ Support this project](#support-this-project)**
 
 Keep the **Xiaomi TV Box S 3rd Gen** discoverable and reachable for casting during standby over **Wi-Fi or USB Ethernet**, using a small Magisk module.
