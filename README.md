@@ -41,6 +41,8 @@ The most recently checked configuration had **Deep Doze, Light Doze, and Low Pow
 
 ## Requirements
 
+> **Back up before rooting:** Expect a factory reset when unlocking the bootloader as part of the rooting procedure. Installed apps, app data, accounts, settings, and files stored on the box may be erased. Make a backup **before starting section B**, and keep it on your PC, external storage, or another device—not only on the box. Installing this module on an already-rooted box does not require unlocking again.
+
 - A box matching the identification above, connected through Wi-Fi or a working USB Ethernet adapter.
 - A Windows PC with [Android Platform Tools](https://developer.android.com/tools/releases/platform-tools), for example extracted to `C:\platform-tools`.
 - Working ADB access through **wireless ADB or USB ADB** and, for section A, working Magisk root.
@@ -188,6 +190,11 @@ If you need another USB ADB check, disconnect the Ethernet adapter, turn USB deb
 
 ## B — Separate section: rooting
 
+> [!WARNING]
+> **Rooting is likely to reset the box to factory settings. Make a backup first.** The bootloader-unlocking step can erase user data, so plan to set up the box and sign in to your apps again afterward. Do not begin until you have saved the data and settings you want to keep somewhere outside the box.
+
+Before proceeding, copy important local files to your PC or external storage, use any backup/export features provided by your apps, and record important settings. Make sure you can sign back in to your accounts. Do not assume Android will automatically restore every app's data; verify the backups you intend to rely on.
+
 **Skip this section if Magisk root already works.** This section records the procedure used on the test device. Rooting and unlocking are much more invasive than the module itself: unlocking the bootloader can erase user data, and an incorrect boot image can prevent the device from booting. Back up your data and obtain the correct stock image first. Do not assume you have a usable second slot or an easy recovery method without checking.
 
 Android describes data erasure during unlocking in its [bootloader documentation](https://source.android.com/docs/core/architecture/bootloader/locking_unlocking). This tutorial does not automate unlocking or flashing: perform the steps separately and check each result.
@@ -272,6 +279,8 @@ Continue only if fastboot detects your box. If it waits for a device, resolve th
 
 > **Windows fastboot driver note:** Platform Tools supplies `adb` and `fastboot`, but you may also need to install a compatible USB/bootloader driver. If `fastboot devices` is empty or a command waits for a device, open **Device Manager with the box connected by USB and in bootloader mode**. Find the Android/unknown device, choose **Update driver → Browse my computer for drivers**, and select the appropriate driver from a trusted manufacturer source. A correctly configured entry commonly appears as **Android Bootloader Interface**. Working ADB in Android does not guarantee that the bootloader driver is installed; wireless ADB does not use that driver at all. Recheck `fastboot devices` before unlocking or flashing. See [Android's Windows USB driver instructions and OEM links](https://developer.android.com/studio/run/oem-usb). The exact driver package used in our original test was not recorded.
 
+
+**Final backup check:** The next command unlocks the bootloader and can trigger a factory reset. Confirm that your backups are stored outside the box before continuing.
 
 The following commands were successfully executed on the test device:
 
