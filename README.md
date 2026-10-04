@@ -268,6 +268,9 @@ Keep the backup and record its firmware version. Other firmware may have a diffe
 
 Continue only if fastboot detects your box. If it waits for a device, resolve the cable/USB connection and Windows driver first. Record the slot.
 
+> **Windows fastboot driver note:** Platform Tools supplies `adb` and `fastboot`, but you may also need to install a compatible USB/bootloader driver. If `fastboot devices` is empty or a command waits for a device, open **Device Manager with the box connected by USB and in bootloader mode**. Find the Android/unknown device, choose **Update driver → Browse my computer for drivers**, and select the appropriate driver from a trusted manufacturer source. A correctly configured entry commonly appears as **Android Bootloader Interface**. Working ADB in Android does not guarantee that the bootloader driver is installed; wireless ADB does not use that driver at all. Recheck `fastboot devices` before unlocking or flashing. See [Android's Windows USB driver instructions and OEM links](https://developer.android.com/studio/run/oem-usb). The exact driver package used in our original test was not recorded.
+
+
 The following commands were successfully executed on the test device:
 
 ```powershell
@@ -448,17 +451,29 @@ Read the values again afterward. The previous wakelock app is not required. This
 
 | Issue | What to check |
 |---|---|
-| `more than one device/emulator` | Run `adb devices` and explicitly select the correct connection using `adb -s`. USB and wireless connections can list the same box twice. |
+| `more than one device/emulator` | **First disconnect and reconnect:** run `adb disconnect`, then `adb connect BOX-IP:CONNECTION-PORT`, and check `adb devices`. This clears existing network ADB connections, including stale ones. If multiple entries remain, unplug an unused USB connection or select the intended device using `adb -s`. See the commands below. |
 | `unauthorized` | Approve ADB authorization on the box. |
 | USB Ethernet does not work, even while awake | Turn **USB debugging off** in Developer options, disconnect the PC cable, and connect the Ethernet adapter. On the tested box, USB debugging must be off for USB Ethernet. |
 | USB ADB stopped working after an Ethernet test | Disconnect the Ethernet adapter, turn **USB debugging on**, reconnect the PC, and approve authorization if prompted. |
-| `no devices` / fastboot keeps waiting | Resolve the connection/driver first. A failed command did not apply the intended change. |
+| `no devices` / fastboot keeps waiting | Fastboot requires a physical USB data cable and a compatible Windows bootloader driver. Check Device Manager while the box is in fastboot and install/update the appropriate driver; see the Windows driver note in B3. Working wireless ADB does not verify USB drivers. A failed command did not apply the intended change. |
 | No `status.log` after reboot | Check in Magisk that the module is installed and enabled, and that Magisk root works. |
 | `ERROR` in `status.log` | Read the error and check the kernel interfaces; do not blindly change SELinux or permissions. |
 | Lock active, but the box still disappears | Verify the IP of the connection being tested and test Wi-Fi and Ethernet separately. Check Wi-Fi signal/access-point settings or the USB adapter/link as appropriate. Confirm the firmware and hardware used. The lock cannot fix every driver or network problem. |
 | Ping works, but Cast does not | Network reachability and Cast discovery are different. Check that devices are on the same LAN, guest-network/client isolation, and the Cast service. |
 | Reachable, but power consumption is higher | Expected consequence: the box cannot enter normal full system suspend while the lock is active. |
 | Stops working after a firmware update | Recheck root and the module lock; do not reuse old init_boot images blindly. OTA/root retention was not tested in this tutorial. |
+
+### First fix for multiple ADB connections
+
+For `more than one device/emulator`, first clear the existing network connections and reconnect only to the box:
+
+```powershell
+.\adb disconnect
+.\adb connect BOX-IP:CONNECTION-PORT
+.\adb devices
+```
+
+Use the current connection address from the box's Wireless debugging screen, not its pairing port. This removes network ADB connections, including stale ones; it does not remove pairing authorizations, disconnect USB devices, or stop emulators. If more than one entry remains, disconnect any unused USB connection or select the box explicitly with `adb -s DEVICE-ID ...`, using its exact ID from `adb devices`.
 
 ## E — Technical background
 
