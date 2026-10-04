@@ -1,0 +1,5 @@
+releases/
+*.img
+*.apk
+*.jar
+*.log
