@@ -504,4 +504,4 @@ This project is distributed under GPL-3.0; see LICENSE and THIRD_PARTY_NOTICES.m
 
 ## Support this project
 
-If this module helped you, you can optionally [support the project via PayPal](https://www.paypal.com/donate/?hosted_button_id=3989J24TFEK9Y). Any amount is appreciated. The module and guide remain free for everyone; donations are never required.
+If this module helped you, you can optionally support the project via [PayPal](https://www.paypal.com/donate/?hosted_button_id=3989J24TFEK9Y) or [Revolut](https://revolut.me/j_rouwhorst). Any amount is appreciated. The module and guide remain free for everyone; donations are never required.
