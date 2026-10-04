@@ -41,12 +41,33 @@ The most recently checked configuration had **Deep Doze, Light Doze, and Low Pow
 
 - A box matching the identification above, connected through Wi-Fi or a working USB Ethernet adapter.
 - A Windows PC with [Android Platform Tools](https://developer.android.com/tools/releases/platform-tools), for example extracted to `C:\platform-tools`.
-- Working ADB access and, for section A, working Magisk root.
+- Working ADB access through **wireless ADB or USB ADB** and, for section A, working Magisk root.
+- A **USB-A-to-USB-A data cable for the fastboot steps in B3 and B5**. If Magisk root already works, the module can be installed using wireless ADB without this cable.
 - The included **`Twilight-Standby-Discoverability-v1.1.zip`** file.
 
 Use PowerShell and copy only the commands, not a `PS C:\...>` prompt. The examples assume exactly one connected Android device. If multiple devices are connected, explicitly select the intended device using `adb -s`.
 
 The module ZIP is the installation ZIP. If you have a sharing bundle containing this README as well, extract that bundle first; do not install the outer bundle directly in Magisk.
+
+## Choose your connection: wireless ADB or USB
+
+**Wireless ADB can replace the USB-A-to-USB-A cable for every ADB step in this guide while Android is running**, including checking the device, transferring files, patching the image on the box, installing the module, and reading its status.
+
+**Exception: the fastboot steps require a physical USB data connection to the PC.** Wireless ADB cannot carry out the unlocking or flashing commands in B3 and B5. You may send `adb reboot bootloader` wirelessly, but ADB disconnects when the box enters the bootloader. From there, use the USB cable and `fastboot`. Technically this is **fastboot over USB**, not USB ADB; `fastboot devices` must detect the box.
+
+### Set up wireless ADB
+
+Keep the PC and box on the same Wi-Fi network. In Developer options, enable **Wireless debugging** and select **Pair device with pairing code**. In PowerShell:
+
+```powershell
+.\adb pair BOX-IP:PAIRING-PORT
+.\adb connect BOX-IP:CONNECTION-PORT
+.\adb devices
+```
+
+Replace the placeholders with the values shown on the box. Enter the pairing code when prompted. Use the pairing dialog's port for `pair` and the main Wireless debugging screen's port for `connect`; these may differ. Once connected, the guide's ADB commands work unchanged. After a reboot, reconnect if necessary; after an unlock/reset, you may need to enable debugging and pair again. See [Android's wireless ADB instructions](https://developer.android.com/tools/adb#connect-to-a-device-over-wi-fi).
+
+Wireless debugging and USB debugging are separate settings. **USB debugging must still be off for USB Ethernet on the tested box.** A wireless ADB connection may disappear when switching networks or entering standby; do not rely on it remaining available during an Ethernet test. Disconnect ADB before testing standby behavior.
 
 ## Important: switch USB debugging when changing USB connections
 
@@ -99,7 +120,7 @@ This test does not create a persistent boot setting:
 
 Check that `discoverability_test` appears. Connect using the network you want to test, put the box into standby, and test ping and a new Cast connection within five minutes. The time unit is nanoseconds; the lock expires automatically. Test each connection separately: disconnect USB Ethernet for a Wi-Fi test, or turn Wi-Fi off for an Ethernet test, so the result clearly applies to the selected connection.
 
-**Only one USB port and testing Ethernet?** Run the command while USB ADB is connected. Then turn **USB debugging off** in Developer options using the remote, replace the PC's USB connection with the Ethernet adapter, and test from your PC/phone before the five-minute lock expires. ADB does not need to stay connected during the test. To read results through USB ADB afterward, disconnect the adapter, turn USB debugging back on, and reconnect the PC. For a Wi-Fi test, keep the box on Wi-Fi and disconnect ADB before testing so the debugging connection does not influence the result.
+**Only one USB port and testing Ethernet?** Run the command using USB ADB or wireless ADB while the box is awake. If using wireless ADB, disconnect it before the standby test. Then turn **USB debugging off** in Developer options using the remote, replace the PC's USB connection with the Ethernet adapter, and test from your PC/phone before the five-minute lock expires. ADB does not need to stay connected during the test. To read results through USB ADB afterward, disconnect the adapter, turn USB debugging back on, and reconnect the PC. For a Wi-Fi test, keep the box on Wi-Fi and disconnect ADB before testing so the debugging connection does not influence the result.
 
 ### A3. Install the module
 
@@ -171,7 +192,7 @@ Android describes data erasure during unlocking in its [bootloader documentation
 
 ### B1. Record the device identity and firmware
 
-Enable Developer options by repeatedly selecting the build number in device settings; menu names may vary. Enable OEM unlocking and USB debugging. Authorize the PC on the box.
+Enable Developer options by repeatedly selecting the build number in device settings; menu names may vary. Enable OEM unlocking. For ADB, either enable USB debugging and authorize the PC, or set up Wireless debugging as described above. Wireless ADB works for these Android steps; the later fastboot steps still need the USB data cable.
 
 ```powershell
 cd C:\platform-tools
@@ -236,7 +257,7 @@ Keep the backup and record its firmware version. Other firmware may have a diffe
 
 ### B3. Unlock the bootloader
 
-Use a working USB data connection to the PC; an existing wireless ADB connection does not mean fastboot works over Wi-Fi.
+**A USB-A-to-USB-A data cable is required for this section.** Wireless ADB may be used to send `adb reboot bootloader`, but unlocking then uses **fastboot over USB**, not ADB. Connect the PC and box by USB before running the fastboot commands.
 
 ```powershell
 .\adb reboot bootloader
@@ -327,6 +348,8 @@ Get-FileHash .\init_boot_magisk.img -Algorithm SHA256
 The hashes on the box and PC must match. Our patched image was 8388608 bytes. The patched hash can differ between patch environments; someone else's patched hash is no substitute for matching stock firmware and a successful patch on your own device.
 
 ### B5. Flash only init_boot on the verified active slot
+
+**Reconnect the USB-A-to-USB-A data cable for this section.** Even if the image was patched and transferred using wireless ADB, flashing requires fastboot over USB. Wireless ADB cannot replace this connection.
 
 ```powershell
 .\adb reboot bootloader
