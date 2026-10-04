@@ -1,6 +1,6 @@
 # Twilight Standby Discoverability
 
-**[Download the module](https://github.com/JRouwhorst/twilight-standby-discoverability/releases/latest)** · **[Report an issue](https://github.com/JRouwhorst/twilight-standby-discoverability/issues)**
+**[Download the module](https://github.com/JRouwhorst/twilight-standby-discoverability/releases/latest)** · **[Report an issue](https://github.com/JRouwhorst/twilight-standby-discoverability/issues)** · **[♡ Support this project](#support-this-project)**
 
 Keep the **Xiaomi TV Box S 3rd Gen** discoverable and reachable for casting during standby over **Wi-Fi or USB Ethernet**, using a small Magisk module.
 
@@ -501,3 +501,7 @@ The specific test results, firmware hash, slot checks, and command sequence come
 ## License and downloads
 
 This project is distributed under GPL-3.0; see LICENSE and THIRD_PARTY_NOTICES.md. Download the installation ZIP from Releases. GitHub's automatic source archives are not installable Magisk ZIPs. This GitHub package includes license and attribution files, so its checksum differs from the earlier sharing bundle; runtime scripts are unchanged.
+
+## Support this project
+
+If this module helped you, you can optionally [support the project via PayPal](https://www.paypal.com/donate/?hosted_button_id=3989J24TFEK9Y). Any amount is appreciated. The module and guide remain free for everyone; donations are never required.
